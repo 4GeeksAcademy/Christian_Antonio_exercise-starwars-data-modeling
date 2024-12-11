@@ -30,3 +30,52 @@ class Address(Base):
 
 ## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
+
+class User(Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String(20), nullable = False, unique = True)
+    email = Column(String(50), nullable = False, unique = True)
+    password = Column(String(10))
+    planets = relationship("fav_Planets", backref="user" )
+    characters = relationship("fav_Characters", backref="user" )
+
+class Planets(Base):
+    __tablename__ = 'planets'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20))
+
+class Characters(Base):
+    __tablename__ = 'characters'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20))
+
+class Fav_Characters(Base):
+    __tablename__ = 'fav_characters'
+
+    user_id = Column(Integer, ForeignKey("user.id"), nullable= False)
+    characters_id = Column(Integer,ForeignKey("characters.id") , nullable= False)
+    character = relationship("characters", backref="fav_characters" )
+
+class Fav_Planets(Base):
+    __tablename__ = 'fav_planets'
+    
+    user_id = Column(Integer, ForeignKey("user.id"), nullable= False)
+    planets_id = Column(Integer,ForeignKey("planets.id"), nullable= False)
+    planet = relationship("planets", backref="fav_planets" )
+
+
+
+
+
+# class User(Base):
+#     __tablename__ = 'User'
+
+#     id = Column(Integer, primary_key=True)
+#     name = String((50), nullable = False)
+#     name = String((50), nullable = False)
+#     email = Column(String(100), nullable = False, unique = True)
+#     posts = relationship('Post', backref='users.id')
